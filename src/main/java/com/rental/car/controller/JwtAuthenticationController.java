@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rental.car.config.JwtTokenUtil;
-import com.rental.car.model.JwtRequest;
 import com.rental.car.model.JwtResponse;
+import com.rental.car.model.User;
 import com.rental.car.service.JwtUserDetailsService;
 
 @RestController
-@CrossOrigin
 public class JwtAuthenticationController {
 
 	@Autowired
@@ -30,14 +29,13 @@ public class JwtAuthenticationController {
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
 
-	@PostMapping(value = "/authenticate")
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+	@CrossOrigin(origins="http://localhost:4200")
+	@PostMapping(value="/login")
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody User userAuthenticationRequest) throws Exception {
 
-		authenticate(authenticationRequest.getEmail(), authenticationRequest.getPassword());
+		authenticate(userAuthenticationRequest.getEmail(), userAuthenticationRequest.getPassword());
 
-		final UserDetails userDetails = userDetailsService
-				.loadUserByUsername(authenticationRequest.getEmail());
-
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(userAuthenticationRequest.getEmail());
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
 		return ResponseEntity.ok(new JwtResponse(token, userDetails.getUsername(), userDetails.getAuthorities()));
@@ -52,4 +50,6 @@ public class JwtAuthenticationController {
 			throw new Exception("INVALID_CREDENTIALS", e);
 		}
 	}
+	
+	
 }

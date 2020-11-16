@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rental.car.dto.BookingDTO;
 import com.rental.car.facade.BookingFacade;
+import com.rental.car.request.BookingRequest;
 
 @RestController
 @RequestMapping(value="/bookings")
+@CrossOrigin(origins = "http://localhost:4200")
 public class BookingController {
 	
 	@Autowired
@@ -37,13 +40,8 @@ public class BookingController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<BookingDTO> createBooking(@RequestBody BookingDTO bookDto) {
-		BookingDTO booking = null;
-		try {
-			booking = bookingFacade.createBooking(bookDto);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public ResponseEntity<BookingDTO> createBooking(@RequestBody BookingRequest bookDto) throws Exception {
+		BookingDTO booking = bookingFacade.createBooking(bookDto);
 		if(booking==null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
@@ -60,6 +58,11 @@ public class BookingController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	    }
+		/*if(bookingFacade.updateBooking(bookingDto.getId(), bookingDto) != null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}*/
 	}
 	
 	@DeleteMapping("/delete-bookings/{id}")

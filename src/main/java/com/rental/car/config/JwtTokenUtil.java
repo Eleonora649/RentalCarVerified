@@ -11,8 +11,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Clock;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.impl.DefaultClock;
 
 @Component
 public class JwtTokenUtil implements Serializable{
@@ -23,6 +25,7 @@ public class JwtTokenUtil implements Serializable{
 	private static final long serialVersionUID = -6222514625875704626L;
 
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+	private Clock clock = DefaultClock.INSTANCE;
 
 	@Value("${jwt.secret}")
 	private String secret;
@@ -68,7 +71,27 @@ public class JwtTokenUtil implements Serializable{
 	}
 
 	public Boolean validateToken(String token, UserDetails userDetails) {
-		final String username = getUsernameFromToken(token);
-		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+		final String email = getUsernameFromToken(token);
+		return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
+	}
+
+	public String refreshToken(String token) 
+	{
+		final Date createdDate = clock.now();
+		final Date expirationDate = calculateExpirationDate(createdDate);
+
+		final Claims claims = getAllClaimsFromToken(token);
+		claims.setIssuedAt(createdDate);
+		claims.setExpiration(expirationDate);
+
+		return Jwts.builder()
+				.setClaims(claims)
+				.signWith(SignatureAlgorithm.HS512, secret)
+				.compact();
+	}
+	
+	private Date calculateExpirationDate(Date createdDate) 
+	{
+		return new Date(createdDate.getTime() + JWT_TOKEN_VALIDITY * 1000);
 	}
 }

@@ -43,7 +43,7 @@ public class User {
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="date_of_birth")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dateOfBirth;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="user", cascade=CascadeType.ALL)

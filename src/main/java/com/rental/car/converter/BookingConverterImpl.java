@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.rental.car.dto.BookingDTO;
 import com.rental.car.model.Booking;
+import com.rental.car.request.BookingRequest;
 
 @Component("bookingConverter")
 public class BookingConverterImpl implements BookingConverter {
@@ -24,8 +25,8 @@ public class BookingConverterImpl implements BookingConverter {
 	@Override
 	public Booking convert(BookingDTO bookingDto) throws Exception {
 		Booking booking = new Booking();
-		Date dateStart = new SimpleDateFormat("yyyy-MM-dd").parse(bookingDto.getStartBooking());
-		Date dateEnd = new SimpleDateFormat("yyy-MM-dd").parse(bookingDto.getEndOfBooking());
+		Date dateStart = new SimpleDateFormat("dd/MM/yyyy").parse(bookingDto.getStartBooking());
+		Date dateEnd = new SimpleDateFormat("dd/MM/yyyy").parse(bookingDto.getEndOfBooking());
 		
 		booking.setIdBooking(bookingDto.getId());
 		booking.setStartBooking(dateStart);
@@ -36,6 +37,19 @@ public class BookingConverterImpl implements BookingConverter {
 		return booking;
 	}
 
+	@Override
+	public Booking convert(BookingRequest bookingRequest) throws Exception {
+		Booking booking = new Booking();
+		
+		booking.setIdBooking(bookingRequest.getId());
+		booking.setStartBooking(bookingRequest.getStartBooking());
+		booking.setEndOfBooking(bookingRequest.getEndOfBooking());
+		booking.setCar(carConverter.convert(bookingRequest.getCar()));
+		booking.setUser(userConverter.convert(bookingRequest.getUser()));
+		
+		return booking;
+	}
+	
 	@Override
 	public List<Booking> convertAll(List<BookingDTO> bookingDto) throws Exception {
 		List<Booking> bookings = new ArrayList<Booking>();
@@ -51,8 +65,8 @@ public class BookingConverterImpl implements BookingConverter {
 	@Override
 	public BookingDTO reverseConvert(Booking booking) {
 		BookingDTO bookDto = new BookingDTO();
-		String dateStart = new SimpleDateFormat("yyyy-MM-dd").format(booking.getStartBooking());
-		String dateEnd = new SimpleDateFormat("yyyy-MM-dd").format(booking.getEndOfBooking());
+		String dateStart = new SimpleDateFormat("dd/MM/yyyy").format(booking.getStartBooking());
+		String dateEnd = new SimpleDateFormat("dd/MM/yyyy").format(booking.getEndOfBooking());
 		
 		bookDto.setId(booking.getIdBooking());
 		bookDto.setStartBooking(dateStart);

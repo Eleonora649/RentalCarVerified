@@ -8,5 +8,4 @@ import com.rental.car.model.Booking;
 @Repository("bookingRepository")
 public interface BookingRepository extends JpaRepository<Booking, Long>, BookingRepositoryCustom {
 
-	
 }

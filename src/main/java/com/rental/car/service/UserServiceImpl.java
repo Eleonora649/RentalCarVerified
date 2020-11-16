@@ -32,6 +32,11 @@ public class UserServiceImpl implements UserService{
 	public User getUserById(Long id) {
 		return userRepository.getOne(id);
 	}
+	
+	@Override
+	public User getUserByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
 
 	@Override
 	public User createUser(User user) {
@@ -41,7 +46,7 @@ public class UserServiceImpl implements UserService{
 		user.setRoles(roles);
 		
 		user.setName(user.getName());
-		user.setSurname(user.getPassword());
+		user.setSurname(user.getSurname());
 		user.setDateOfBirth(user.getDateOfBirth());
 		user.setEmail(user.getEmail());
 		user.setPassword(bcryptEncoder.encode(user.getPassword()));
@@ -58,7 +63,7 @@ public class UserServiceImpl implements UserService{
 			us.setSurname(user.getSurname());
 			us.setDateOfBirth(user.getDateOfBirth());
 			us.setEmail(user.getEmail());
-			us.setPassword(user.getPassword());
+			us.setPassword(bcryptEncoder.encode(user.getPassword()));
 		}
 		return userRepository.save(us);
 	}
@@ -67,5 +72,4 @@ public class UserServiceImpl implements UserService{
 	public void deleteUser(Long id) {
 		userRepository.deleteById(id);
 	}
-
 }

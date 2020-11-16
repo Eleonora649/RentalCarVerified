@@ -11,4 +11,5 @@ public interface BookingRepositoryCustom {
 	
 	List<Booking> findBookingExist(Car car, User user, Date dateStart, Date endStart);
 
+	int deleteBookingCustom(Booking booking, User user);
 }

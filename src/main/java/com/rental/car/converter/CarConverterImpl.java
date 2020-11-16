@@ -11,6 +11,7 @@ import com.rental.car.dto.CarDTO;
 import com.rental.car.dto.CategoryDTO;
 import com.rental.car.model.Car;
 import com.rental.car.model.Category;
+import com.rental.car.request.CarRequest;
 import com.rental.car.service.CategoryService;
 
 @Component("carConverter")
@@ -24,20 +25,38 @@ public class CarConverterImpl implements CarConverter{
 	
 	@Override
 	public Car convert(CarDTO carDto) {
-		Category category = categoryService.getCategoryById(carDto.getCategory().getIdCategory());
-		
-		Car car = new Car();
-		car.setIdCar(carDto.getIdCar());
-		car.setCarModel(carDto.getCarModel());
-		car.setManufacturer(carDto.getManufacturer());
-		car.setCarLicensePlate(carDto.getCarLicensePlate());
-		car.setYearOfRegistration(carDto.getYearOfRegistration());
-		car.setCategory(category);
-		return car;
+		if(carDto != null ) {
+			Category category = categoryService.getCategoryById(carDto.getCategory().getIdCategory());
+			Car car = new Car();
+			car.setIdCar(carDto.getIdCar());
+			car.setCarModel(carDto.getCarModel());
+			car.setManufacturer(carDto.getManufacturer());
+			car.setCarLicensePlate(carDto.getCarLicensePlate());
+			car.setYearOfRegistration(carDto.getYearOfRegistration());
+			car.setCategory(category);
+			return car;
+		}
+		return null;
 	}
 
 	@Override
-	public List<Car> convertAll(List<CarDTO> carDto) {
+	public Car convert(CarRequest carRequest) {
+		if(carRequest != null ) {
+			Category category = categoryService.getCategoryById(carRequest.getCategory());
+			Car car = new Car();
+			car.setIdCar(carRequest.getIdCar());
+			car.setCarModel(carRequest.getCarModel());
+			car.setManufacturer(carRequest.getManufacturer());
+			car.setCarLicensePlate(carRequest.getCarLicensePlate());
+			car.setYearOfRegistration(carRequest.getYearOfRegistration());
+			car.setCategory(category);
+			return car;
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Car> convertAll(List<CarDTO> carDto) throws Exception {
 		List<Car> cars = new ArrayList<Car>();
 		Iterator<CarDTO> carDtos = carDto.iterator();
 		

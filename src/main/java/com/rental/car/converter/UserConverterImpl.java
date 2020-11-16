@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.rental.car.dto.UserDTO;
 import com.rental.car.model.User;
+import com.rental.car.request.UserRequest;
 
 @Component("userConverter")
 public class UserConverterImpl implements UserConverter {
@@ -18,7 +19,7 @@ public class UserConverterImpl implements UserConverter {
 	@Override
 	public User convert(UserDTO userDto) throws ParseException {
 		User user = new User();
-		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(userDto.getDate());
+		Date date = new SimpleDateFormat("dd/MM/yyyy").parse(userDto.getDate());
 		
 		user.setIdUser(userDto.getId());
 		user.setName(userDto.getName());
@@ -29,7 +30,21 @@ public class UserConverterImpl implements UserConverter {
 		
 		return user;
 	}
-
+	
+	@Override
+	public User convert(UserRequest userRequest) {
+		User user = new User();
+		
+		user.setIdUser(userRequest.getId());
+		user.setName(userRequest.getName());
+		user.setSurname(userRequest.getSurname());
+		user.setDateOfBirth(userRequest.getDate());
+		user.setEmail(userRequest.getEmail());
+		user.setPassword(userRequest.getPassword());
+		
+		return user;
+	}
+	
 	@Override
 	public List<User> convertAll(List<UserDTO> userDto) throws Exception {
 		List<User> users = new ArrayList<User>();
@@ -45,7 +60,7 @@ public class UserConverterImpl implements UserConverter {
 	@Override
 	public UserDTO reverseConvert(User user) {
 		UserDTO userDto = new UserDTO();
-		String date = new SimpleDateFormat("yyyy-MM-dd").format(user.getDateOfBirth());
+		String date = new SimpleDateFormat("dd/MM/yyyy").format(user.getDateOfBirth());
 		
 		userDto.setId(user.getIdUser());
 		userDto.setName(user.getName());
@@ -68,5 +83,4 @@ public class UserConverterImpl implements UserConverter {
 		}
 		return userDtos;
 	}
-
 }

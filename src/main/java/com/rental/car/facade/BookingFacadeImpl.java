@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.rental.car.converter.BookingConverter;
 import com.rental.car.dto.BookingDTO;
 import com.rental.car.model.Booking;
+import com.rental.car.request.BookingRequest;
 import com.rental.car.service.BookingService;
 
 @Component("bookingFacade")
@@ -34,7 +35,7 @@ public class BookingFacadeImpl implements BookingFacade {
 	}
 
 	@Override
-	public BookingDTO createBooking(BookingDTO bookDto) throws Exception {
+	public BookingDTO createBooking(BookingRequest bookDto) throws Exception {
 		Booking booking = bookingConverter.convert(bookDto);
 		
 		Booking b = bookingService.createBooking(booking);

@@ -2,12 +2,15 @@ package com.rental.car.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rental.car.model.Booking;
 import com.rental.car.repository.BookingRepository;
 
+@Transactional
 @Service("bookingService")
 public class BookingServiceImpl implements BookingService {
 
@@ -61,5 +64,4 @@ public class BookingServiceImpl implements BookingService {
 	public void deleteBooking(Long id) {
 		bookingRepository.deleteById(id);
 	}
-	
 }

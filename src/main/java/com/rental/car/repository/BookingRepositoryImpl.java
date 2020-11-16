@@ -30,4 +30,13 @@ public class BookingRepositoryImpl implements BookingRepositoryCustom {
 		
 		return booking;
 	}
+	
+	@Override
+	public int deleteBookingCustom(Booking booking, User user) {
+		//entityManager.createQuery("DELETE b FROM Booking b WHERE (user=:user AND id=:id) AND b.startBooking>=DATE(CURDATE()-2)")
+		return entityManager.createQuery("DELETE FROM Booking b WHERE (user=:user AND b=:booking) AND b.startBooking>=DATE(CURDATE()+2)")
+		.setParameter("booking", booking)
+		.setParameter("user", user)
+		.executeUpdate();
+	}
 }

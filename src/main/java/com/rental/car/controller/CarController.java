@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rental.car.dto.CarDTO;
 import com.rental.car.facade.CarFacade;
+import com.rental.car.request.CarRequest;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value="/cars")
 public class CarController {
@@ -47,10 +50,10 @@ public class CarController {
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/register")
-	public ResponseEntity<CarDTO> createCar(@RequestBody CarDTO carDto) {
+	public ResponseEntity<CarDTO> createCar(@RequestBody CarRequest carRequest) {
 		CarDTO car = null;
 		try {
-			car = carFacade.createCar(carDto);
+			car = carFacade.createCar(carRequest);
 			return new ResponseEntity<>(car, HttpStatus.CREATED);
 		}
 		catch (Exception e) {
@@ -61,10 +64,10 @@ public class CarController {
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping
-	public ResponseEntity<CarDTO> updateCar(@RequestBody CarDTO carDto) {
+	public ResponseEntity<CarDTO> updateCar(@RequestBody CarRequest carRequest) {
 		try {
-			Long id = carDto.getIdCar();
-			carFacade.updateCarDto(id, carDto);
+			Long id = carRequest.getIdCar();
+			carFacade.updateCarDto(id, carRequest);
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

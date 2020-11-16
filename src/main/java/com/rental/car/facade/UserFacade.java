@@ -4,17 +4,20 @@ import java.text.ParseException;
 import java.util.List;
 
 import com.rental.car.dto.UserDTO;
+import com.rental.car.request.UserRequest;
 
 public interface UserFacade {
 		
-	public List<UserDTO> getAllUsers();
+	List<UserDTO> getAllUsers();
 	
-	public UserDTO getUserDtoById(Long id);
+	UserDTO getUserDtoById(Long id);
 	
-	public UserDTO createUser(UserDTO userDto) throws Exception;
+	UserDTO createUser(UserRequest userRequest) throws Exception;
 	
-	public UserDTO updateUserDto(Long id, UserDTO userDto) throws ParseException;
+	UserDTO updateUserDto(Long id, UserDTO userDto) throws ParseException;
 	
-	public void deleteUserDto(Long id);
+	void deleteUserDto(Long id);
+
+	UserDTO getUserDtoByEmail(String email);
 
 }

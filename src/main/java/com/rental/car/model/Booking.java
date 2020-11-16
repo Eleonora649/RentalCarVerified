@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name="booking")
 public class Booking {
@@ -25,10 +27,12 @@ public class Booking {
 
 	@Temporal(TemporalType.DATE)
 	@Column(name="start_booking")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date startBooking;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="end_of_booking")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date endOfBooking;
 
 	@ManyToOne(fetch = FetchType.EAGER)

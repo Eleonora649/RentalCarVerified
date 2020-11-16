@@ -18,7 +18,7 @@ public class CategoryConverterImpl implements CategoryConverter {
 		
 		cat.setIdCategory(catDto.getIdCategory());
 		cat.setName(catDto.getName());
-		return null;
+		return cat;
 	}
 
 	@Override

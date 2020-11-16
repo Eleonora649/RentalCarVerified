@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.rental.car.converter.UserConverter;
 import com.rental.car.dto.UserDTO;
 import com.rental.car.model.User;
+import com.rental.car.request.UserRequest;
 import com.rental.car.service.UserService;
 
 @Component("userFacade")
@@ -32,10 +33,17 @@ public class UserFacadeImpl implements UserFacade {
 		UserDTO userDto = userConverter.reverseConvert(user);
 		return userDto;
 	}
+	
+	@Override
+	public UserDTO getUserDtoByEmail(String email) {
+		User user = userService.getUserByEmail(email);
+		UserDTO userDto = userConverter.reverseConvert(user);
+		return userDto;
+	}
 
 	@Override
-	public UserDTO createUser(UserDTO userDto) throws Exception {
-		User user = userConverter.convert(userDto);
+	public UserDTO createUser(UserRequest userRequest) throws Exception {
+		User user = userConverter.convert(userRequest);
 		userService.createUser(user);
 		return userConverter.reverseConvert(user);
 	}

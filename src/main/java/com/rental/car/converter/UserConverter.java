@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.rental.car.dto.UserDTO;
 import com.rental.car.model.User;
+import com.rental.car.request.UserRequest;
 
 public interface UserConverter {
 
@@ -15,4 +16,6 @@ public interface UserConverter {
 	UserDTO reverseConvert(User user);
 	
 	List<UserDTO> reverseConvertAll(List<User> user);
+
+	User convert(UserRequest userRequest);
 }

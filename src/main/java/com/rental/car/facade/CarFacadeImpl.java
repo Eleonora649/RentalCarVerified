@@ -9,6 +9,7 @@ import com.rental.car.converter.CarConverter;
 import com.rental.car.dto.CarDTO;
 import com.rental.car.model.Car;
 import com.rental.car.model.Category;
+import com.rental.car.request.CarRequest;
 import com.rental.car.service.CarService;
 
 @Component("carFacade")
@@ -41,15 +42,16 @@ public class CarFacadeImpl implements CarFacade {
 	}
 	
 	@Override
-	public CarDTO createCar(CarDTO carDto) {
-		Car car = carConverter.convert(carDto);
+	public CarDTO createCar(CarRequest carRequest) throws Exception {
+		Car car = carConverter.convert(carRequest);
 		carService.createCar(car);
 		return carConverter.reverseConvert(car);
 	}
 
+	@SuppressWarnings("unused")
 	@Override
-	public CarDTO updateCarDto(Long id, CarDTO carDto) throws Exception {
-		Car car = carConverter.convert(carDto);
+	public CarDTO updateCarDto(Long id, CarRequest carRequest) throws Exception {
+		Car car = carConverter.convert(carRequest);
 		
 		String model = car.getCarModel();
 		String manufacturer = car.getManufacturer();
@@ -59,9 +61,10 @@ public class CarFacadeImpl implements CarFacade {
 		
 		if(car!=null) {
 			car = carService.updateCar(id, model, manufacturer, license, year, category);
-			carDto = carConverter.reverseConvert(car);
+			CarDTO carDto = carConverter.reverseConvert(car);
+			return carDto;
 		}
-		return carDto;
+		return null;
 	}
 
 	@Override
